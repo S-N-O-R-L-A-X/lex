@@ -33,7 +33,13 @@ void easy_deal(const string &str,int cnt){
 		ans.push_back(to_string(cnt)+":<"+str+","+to_string(string2num[str])+">");
 	}
 	else{
-		ans.push_back(to_string(cnt)+":<"+str+",81"+">");
+		if(str>="0"&&str<="99999999999"){
+			ans.push_back(to_string(cnt)+":<"+str+",80"+">");
+		}
+		else{
+			ans.push_back(to_string(cnt)+":<"+str+",81"+">");
+		}
+		
 	}
 }
 
@@ -44,27 +50,38 @@ void deal(string &str){
 	while(ss>>now){
 		if(string2num.find(now)!=string2num.end()){
 			ans.push_back(to_string(cnt)+":<"+now+","+to_string(string2num[now])+">");
+			cnt++;
 		}
 		else{
 			int start=0;
 			for(int i=0;i<now.size();){
 				if(sign.find(now[i])!=sign.end()){//sign
 					string former=now.substr(start,i-start);
-					easy_deal(now.substr(start,i-start),cnt);
+					easy_deal(former,cnt++);
 					start=i;
 					while(i<now.size()&&sign.find(now[i])!=sign.end()){//always sign
 						i++;
 					}
 					string signs=now.substr(start,i-start);
-					
-					easy_deal(signs,cnt);
+					if(string2num.find(signs)!=string2num.end()){
+						easy_deal(signs,cnt++);
+					}
+					else{
+						for(int j=0;j<signs.size();j++){
+							easy_deal(signs.substr(j,1),cnt++);
+						}
+					}
+					start=i;
 				}
 				else{
 					++i;
 				}
 			}
-			easy_deal(now.substr(start,now.size()),cnt);
+			if(start<now.size()){
+				easy_deal(now.substr(start,now.size()),cnt++);
+			}
 		}
+		
 	}
 }
 
@@ -80,5 +97,4 @@ void Analysis()
 		cout<<line<<endl;
 	}
     /********* End *********/
-	cout<<"end!";
 }
