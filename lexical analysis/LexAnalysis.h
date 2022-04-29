@@ -45,34 +45,56 @@ void easy_deal(const string &str,int cnt){
 	}
 }
 
-void deal_inline_comment(string &str){
-	string tmp=str;
-	while(tmp.find("//")!=tmp.npos){
-		tmp=tmp.substr(tmp.find("//"));
-		int stop=0,cnt=0;
-		for(int i=0;i<tmp.size();++i){
-			if(tmp[i]=='\n'){
-				stop=i;
-				break;
+void deal_comment(string &str){
+	for(int i=0;i<str.size();++i){
+		if(str[i]=='/'){
+			if(str[i+1]=='/'){//inline
+				int ending=i+2,cnt=0;
+				while(ending<str.size()&&str[ending]!='\n'){
+					if(str[ending]==' '){
+						cnt++;
+					}
+					++ending;
+				}
+				comment.push_back(str.substr(i,ending-i));// delete \n
+				cntBlanks.push_back(cnt);
+				i=ending;
 			}
-			else if(tmp[i]==' '){
-				cnt++;
+			else if(str[i+1]=='*'){//block
+				int ending=i+2,cnt=0;
+				while(ending<str.size()-1&&str.substr(ending,2)!="*/"){
+					if(str[ending]==' '||str[ending]=='\n'){
+						cnt++;
+					}
+					ending++;
+				}
+				ending++;
+				comment.push_back(str.substr(i,ending-i+1));
+				cntBlanks.push_back(cnt);
+				i=ending+1;
+				str=str.substr(0,i)+' '+str.substr(i);
 			}
 		}
-		comment.push_back(tmp.substr(0,stop));
-		cntBlanks.push_back(cnt);
-		tmp=tmp.substr(stop);
 	}
 }
 
 void predeal(string &str){ //deal with comments
 	for(int i=0;i<str.size();++i){
-		if(str[i]==';'){
+		if(str[i]==';'||str[i]==')'||str[i]=='('||str[i]=='['||str[i]==']'||str[i]=='{'||str[i]=='}'||str[i]=='.'){
+			str=str.substr(0,i)+' '+str[i]+' '+str.substr(i+1);
+			i++;
+		}
+		else if(i<str.size()&&isalnum(str[i])&&sign.find(str[i+1])!=sign.end()){
+			if(i+2>=str.size()||(str[i+1]!='*')||(str[i+2]!='/')){
+				str=str.substr(0,i+1)+' '+str.substr(i+1);
+			}
+				
+		}
+		else if(i<str.size()&&str[i]=='='&&str[i+1]!='='){
 			str=str.substr(0,i+1)+' '+str.substr(i+1);
 		}
 	}
-	deal_inline_comment(str);
-	// void deal_block_comment();
+	deal_comment(str);
 }
 
 void deal(string &str){
@@ -85,7 +107,7 @@ void deal(string &str){
 			skip--;
 			continue;
 		}
-		if(now[0]=='/'&&now[1]=='/'){
+		if((now[0]=='/'&&now[1]=='/')||(now[0]=='/'&&now[1]=='*')){
 			skip=cntBlanks[commentPointer];
 			ans.push_back(to_string(cnt++)+": <"+comment[commentPointer++]+",79"+">");
 			continue;
@@ -109,12 +131,6 @@ void deal(string &str){
 						i++;
 					}
 					string signs=now.substr(start,i-start);
-
-					// if(signs.size()>=2&&signs[0]=='/'&&signs[1]=='/'){
-					// 	skip=cntBlanks[commentPointer];
-					// 	ans.push_back(to_string(cnt)+": <"+comment[commentPointer++]+",79"+">");
-					// 	break;
-					// }
 
 					if(string2num.find(signs)!=string2num.end()){
 						easy_deal(signs,cnt++);
