@@ -1,0 +1,78 @@
+任务描述
+本关任务：用C/C++编写一个LL(1)解析器
+
+相关知识
+为了完成本关任务，你需要掌握：  
+
+LL文法
+C/C++ 编程语言基础
+C语言的基本结构知识
+LL(1)解析器
+在创建解析器之前，你应该创建一个下面文法的LL(1)分析表。
+
+C/C++
+本实训涉及函数、结构体，标准流输入输出，字符串等操作
+
+实验要求
+实验文法定义  
+
+program -> compoundstmt  
+stmt ->  ifstmt  |  whilestmt  |  assgstmt  |  compoundstmt  
+compoundstmt ->  { stmts }  
+stmts ->  stmt stmts   |   E  
+ifstmt ->  if ( boolexpr ) then stmt else stmt  
+whilestmt ->  while ( boolexpr ) stmt  
+assgstmt ->  ID = arithexpr ;  
+boolexpr  ->  arithexpr boolop arithexpr  
+boolop ->   <  |  >  |  <=  |  >=  | ==  
+arithexpr  ->  multexpr arithexprprime  
+arithexprprime ->  + multexpr arithexprprime  |  - multexpr arithexprprime  |   E  
+multexpr ->  simpleexpr  multexprprime  
+multexprprime ->  * simpleexpr multexprprime  |  / simpleexpr multexprprime  |   E  
+simpleexpr ->  ID  |  NUM  |  ( arithexpr )  
+起始符
+Program
+
+保留字
+{ }  
+if ( ) then else  
+while ( )  
+ID =   
+> < >= <= ==  
++ -  
+* /  
+ID NUM  
+E 是'空'  
+分隔方式
+同一行的输入字符用一个空格字符分隔，例如： ID = NUM ; 红色标记为空格
+
+错误处理
+本实验需要考虑错误处理，如果程序不正确（包含语法错误），它应该打印语法错误消息（与行号一起），并且程序应该修正错误，并继续解析。
+例如：  
+
+语法错误,第4行,缺少";"  
+输入
+要求：在同一行中每个输入字符用一个空格字符分隔，无其余无关符号。  
+
+样例1输入
+{  
+ID = NUM ;  
+}    
+样例2输入
+{   
+If E1   
+then  
+s1  
+else  
+If E2  
+Then  
+S2  
+else   
+S3  
+}
+并没有E1，E2等符号，这只是指代表达式  
+
+输出
+样例1输出
+输出要求：在语法树同一层的叶子节点，在以下格式中有相同的缩进，用tab来控制缩减。如样例所示，相同颜色表示在语法树种他们在同一层。
+  
