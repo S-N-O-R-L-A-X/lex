@@ -1,0 +1,15 @@
+{"program",0},{"stmt",1},{"compoundstmt",2},{"stmts",3},{"ifstmt",4},{"whilestmt",5},{"assgstmt",6},{"boolexpr",7},{"boolop",8},{"arithexpr",9},{"arithexprprime",10},{"multexpr",11},{"multexprprime",12},{"simpleexpr",13}
+"program","stmt","compoundstmt","stmts","ifstmt","whilestmt","assgstmt","boolexpr","boolop","arithexpr","arithexprprime","multexpr","multexprprime","simpleexpr"
+"{","}","<",">","<=",">=","==","+","-","*","/","(",")"
+
+{{"{",0},{"}",1},{"while",2},{"if",3},{"ID",4},{"NUM",5},{";",6},{"*",7},{"/",8},{"+",9},{"-",10},{"(",11},{")",12},{">",13},{"<",14},{"==",15},{"<=",16},{">=",17},{"=",18},{"then",19},{"else",20}};
+
+
+"{","}","<",">","<=",">=","==","+","-","*","/","(",")","ID","NUM","while","if","=","then","else",";"
+if ( ) then else  
+while ( )  
+ID =   
+> < >= <= ==  
++ -  
+* /  
+ID NUM

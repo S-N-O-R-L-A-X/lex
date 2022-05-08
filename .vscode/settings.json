@@ -2,6 +2,8 @@
     "files.associations": {
         "string": "cpp",
         "xstring": "cpp",
-        "xhash": "cpp"
+        "xhash": "cpp",
+        "sstream": "cpp",
+        "vector": "cpp"
     }
 }
