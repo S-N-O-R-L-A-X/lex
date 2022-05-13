@@ -25,7 +25,10 @@ void insert_table(){//insert strings in reverse
 	table[1][4]={"assgstmt"};
 	table[2][0]={"}","stmts","{"};
 	table[3][1]={"E"};
+	table[3][2]={"stmts","stmt"};
+	table[3][3]={"stmts","stmt"};
 	table[3][4]={"stmts","stmt"};
+	table[5][2]={"stmt",")","boolexpr","(","while"};
 	table[6][4]={";","arithexpr","=","ID"};
 	table[7][4]={"arithexpr","boolop","arithexpr"};
 	table[9][4]={"arithexprprime","multexpr"};
@@ -72,7 +75,7 @@ void LLparse(string &prog){
 			if(TERMINALS.find(str)!=TERMINALS.end()){//str is a terminal
 				if(str!=now){
 					error();
-					
+					stk.pop();
 					break;
 				}
 				else{
