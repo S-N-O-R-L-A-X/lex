@@ -1,9 +1,7 @@
 example1:
 input
 {
-
  ID = NUM ;
-
 }
 
 expect:
@@ -34,15 +32,10 @@ program
 example 3:
 input:
 {
-
 while ( ID == NUM ) 
-
 { 
-
 ID = NUM 
-
 }
-
 }
 
 expect:

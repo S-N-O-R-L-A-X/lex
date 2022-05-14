@@ -1,4 +1,4 @@
-// C语言词法分析器
+// C语言词法分析�?
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -16,7 +16,7 @@ using namespace std;
 unordered_map<string,int> TERMINALS,NONTERMINALS;
 vector<vector<vector<string>>> table;
 stack<pair<string,int>> stk;
-
+vector<string> words,ans;
 
 void insert_table(){//insert strings in reverse
 	table[0][0]={"compoundstmt"};
@@ -24,11 +24,13 @@ void insert_table(){//insert strings in reverse
 	table[1][2]={"whilestmt"};
 	table[1][3]={"ifstmt"};
 	table[1][4]={"assgstmt"};
+	table[1][21]={"E"};
 	table[2][0]={"}","stmts","{"};
 	table[3][1]={"E"};
 	table[3][2]={"stmts","stmt"};
 	table[3][3]={"stmts","stmt"};
 	table[3][4]={"stmts","stmt"};
+	table[4][3]={"stmt","else","stmt","then",")","boolexpr","(","if"};
 	table[5][2]={"stmt",")","boolexpr","(","while"};
 	table[6][4]={";","arithexpr","=","ID"};
 	table[7][4]={"arithexpr","boolop","arithexpr"};
@@ -40,67 +42,95 @@ void insert_table(){//insert strings in reverse
 	table[9][4]={"arithexprprime","multexpr"};
 	table[9][5]={"arithexprprime","multexpr"};
 	table[10][6]={"E"};
+	table[10][9]={"arithexprprime","multexpr","+"};
+	table[10][10]={"arithexprprime","multexpr","-"};
 	table[10][12]={"E"};
 	table[10][15]={"E"};
 	table[11][4]={"multexprprime","simpleexpr"};
 	table[11][5]={"multexprprime","simpleexpr"};
 	table[12][6]={"E"};
+	table[12][7]={"multexprprime","simpleexpr","*"};
+	table[12][8]={"multexprprime","simpleexpr","/"};
 	table[12][12]={"E"};
 	table[12][15]={"E"};
 	table[13][4]={"ID"};
 	table[13][5]={"NUM"};
 	table[13][11]={")","arithexpr","("};
+
+	table[10][1]={"E"};
+	table[12][1]={"E"};
 }
 
-void init(){
+
+
+void split(string &prog){
+	string tmp=prog;
+	int pre=0,cur=tmp.find("\n");
+	while(cur!=tmp.npos){
+		if(cur>pre){
+			words.push_back(tmp.substr(pre,cur-pre));
+		}
+		pre=cur+1;
+		cur=tmp.find("\n",pre);
+	}
+	if(pre!=tmp.size()){
+		words.push_back(tmp.substr(pre));
+	}
+}
+
+void init(string &prog){
     NONTERMINALS={{"program",0},{"stmt",1},{"compoundstmt",2},{"stmts",3},{"ifstmt",4},{"whilestmt",5},{"assgstmt",6},{"boolexpr",7},{"boolop",8},{"arithexpr",9},{"arithexprprime",10},{"multexpr",11},{"multexprprime",12},{"simpleexpr",13}};
 	TERMINALS={{"{",0},{"}",1},{"while",2},{"if",3},{"ID",4},{"NUM",5},{";",6},{"*",7},{"/",8},{"+",9},{"-",10},{"(",11},{")",12},{">",13},{"<",14},{"==",15},{"<=",16},{">=",17},{"=",18},{"then",19},{"else",20},{"$",21}};
-	table.resize(14,vector<vector<string>>(20,vector<string>(0)));
+	split(prog);
+	table.resize(14,vector<vector<string>>(22,vector<string>(0)));
 	insert_table();
 	stk.push({"program",0});
 }
 
-void println(const string &str,int layer){
+void println(string &tmp,const string &str,int layer){
 	for(int i=0;i<layer;++i){
-		cout<<"\t";
+		tmp+="\t";
 	}
-	cout<<str<<endl;
+	tmp+=str;
+	ans.push_back(tmp);
 }
 
-void error(){
-	cout<<"error"<<endl;
+void error(string &lost,int line){
+	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
 }
 
 void LLparse(string &prog){
-	stringstream ss(prog);
-	string now;
-	
-	while(ss>>now){
-		while(!stk.empty()){
-			auto [str,layer]=stk.top();
-			if(str=="E"){
-				println(str,layer);
+	for(int i=0;i<words.size();++i){
+		stringstream ss(words[i]);
+		string now;
+		while(ss>>now){
+			while(!stk.empty()){
+				string tmp="";
+				auto [str,layer]=stk.top();
+				if(str=="E"){
+					println(tmp,str,layer);
+					stk.pop();
+					continue ;
+				}
+				if(TERMINALS.find(str)!=TERMINALS.end()){//str is a terminal
+					if(str!=now){
+						error(str,i); //index starts from 0 but the loss is before.
+						stk.pop();
+						break;
+					}
+					else{
+						println(tmp,str,layer);
+						stk.pop();
+						break;
+					}
+				}
 				stk.pop();
-				continue ;
-			}
-			if(TERMINALS.find(str)!=TERMINALS.end()){//str is a terminal
-				if(str!=now){
-					error();
-					stk.pop();
-					break;
+				
+				println(tmp,str,layer);
+				int row=NONTERMINALS[str],col=TERMINALS[now];
+				for(const string &s:table[row][col]){
+					stk.push({s,layer+1});
 				}
-				else{
-					println(str,layer);
-					stk.pop();
-					break;
-				}
-			}
-			stk.pop();
-			
-			println(str,layer);
-			int row=NONTERMINALS[str],col=TERMINALS[now];
-			for(const string &s:table[row][col]){
-				stk.push({s,layer+1});
 			}
 		}
 	} 
@@ -114,18 +144,21 @@ void read_prog(string& prog)
 		prog += c;
 	}
 }
-/* 你可以添加其他函数 */
+/* 你可以添加其他函�? */
 
 void Analysis()
 {
 	string prog;
 	read_prog(prog);
 	
-	/* 骚年们 请开始你们的表演 */
+	/* 骚年�? 请开始你们的表演 */
     /********* Begin *********/
-    init();
-	prog+=" $";
+    init(prog);
+	// prog+=" $";
     LLparse(prog);
+	for(const string &s:ans){
+		cout<<s<<endl;
+	}
     /********* End *********/
 	
 }
