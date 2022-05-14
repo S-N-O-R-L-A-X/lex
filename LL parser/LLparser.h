@@ -20,6 +20,7 @@ stack<pair<string,int>> stk;
 
 void insert_table(){//insert strings in reverse
 	table[0][0]={"compoundstmt"};
+	table[1][0]={"compoundstmt"};
 	table[1][2]={"whilestmt"};
 	table[1][3]={"ifstmt"};
 	table[1][4]={"assgstmt"};
@@ -31,14 +32,24 @@ void insert_table(){//insert strings in reverse
 	table[5][2]={"stmt",")","boolexpr","(","while"};
 	table[6][4]={";","arithexpr","=","ID"};
 	table[7][4]={"arithexpr","boolop","arithexpr"};
+	table[8][13]={">"};
+	table[8][14]={"<"};
+	table[8][15]={"=="};
+	table[8][16]={"<="};
+	table[8][17]={">="};
 	table[9][4]={"arithexprprime","multexpr"};
 	table[9][5]={"arithexprprime","multexpr"};
 	table[10][6]={"E"};
+	table[10][12]={"E"};
+	table[10][15]={"E"};
 	table[11][4]={"multexprprime","simpleexpr"};
 	table[11][5]={"multexprprime","simpleexpr"};
 	table[12][6]={"E"};
+	table[12][12]={"E"};
+	table[12][15]={"E"};
 	table[13][4]={"ID"};
 	table[13][5]={"NUM"};
+	table[13][11]={")","arithexpr","("};
 }
 
 void init(){
