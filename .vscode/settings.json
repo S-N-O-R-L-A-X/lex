@@ -5,6 +5,7 @@
         "xhash": "cpp",
         "sstream": "cpp",
         "vector": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "utility": "cpp"
     }
 }

@@ -87,7 +87,8 @@ void init(string &prog){
 	stk.push({"program",0});
 }
 
-void println(string &tmp,const string &str,int layer){
+void println(const string &str,int layer){
+	string tmp="";
 	for(int i=0;i<layer;++i){
 		tmp+="\t";
 	}
@@ -105,10 +106,12 @@ void LLparse(string &prog){
 		string now;
 		while(ss>>now){
 			while(!stk.empty()){
-				string tmp="";
-				auto [str,layer]=stk.top();
+
+				string str=stk.top().first;
+				int layer=stk.top().second;
+				// auto [str,layer]=stk.top();
 				if(str=="E"){
-					println(tmp,str,layer);
+					println(str,layer);
 					stk.pop();
 					continue ;
 				}
@@ -116,24 +119,31 @@ void LLparse(string &prog){
 					if(str!=now){
 						error(str,i); //index starts from 0 but the loss is before.
 						stk.pop();
-						break;
+						println(str,layer);
+						continue;
 					}
 					else{
-						println(tmp,str,layer);
+						println(str,layer);
 						stk.pop();
 						break;
 					}
 				}
 				stk.pop();
 				
-				println(tmp,str,layer);
+				println(str,layer);
 				int row=NONTERMINALS[str],col=TERMINALS[now];
 				for(const string &s:table[row][col]){
 					stk.push({s,layer+1});
 				}
 			}
 		}
-	} 
+	}
+	// while(!stk.empty()){
+	// 	string str=stk.top().first;
+	// 	int layer=stk.top().second;
+	// 	println(str,layer);
+	// 	stk.pop();
+	// }
 }
 
 
@@ -159,6 +169,7 @@ void Analysis()
 	for(const string &s:ans){
 		cout<<s<<endl;
 	}
+	
     /********* End *********/
 	
 }
