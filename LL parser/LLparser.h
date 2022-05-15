@@ -30,6 +30,7 @@ void insert_table(){//insert strings in reverse
 	table[3][2]={"stmts","stmt"};
 	table[3][3]={"stmts","stmt"};
 	table[3][4]={"stmts","stmt"};
+	table[3][5]={"stmts","stmt"};
 	table[4][3]={"stmt","else","stmt","then",")","boolexpr","(","if"};
 	table[5][2]={"stmt",")","boolexpr","(","while"};
 	table[6][4]={";","arithexpr","=","ID"};
@@ -138,12 +139,6 @@ void LLparse(string &prog){
 			}
 		}
 	}
-	// while(!stk.empty()){
-	// 	string str=stk.top().first;
-	// 	int layer=stk.top().second;
-	// 	println(str,layer);
-	// 	stk.pop();
-	// }
 }
 
 
