@@ -1,0 +1,66 @@
+任务描述
+本关任务：根据给定文法，用C/C++语言编写SLR(1) 或LR(1)语法分析器
+
+相关知识
+为了完成本关任务，你需要掌握：
+
+LR文法
+C/C++ 编程语言基础
+C语言的基本结构知识
+LR分析器
+在动手设计分析器之前，你应该先设计好下面文法的SLR(1)或LR(1)分析表。
+
+C/C++
+本实训涉及函数、结构体，标准流输入输出，字符串等操作
+
+实验要求
+实验文法定义
+
+program -> compoundstmt
+stmt -> ifstmt | whilestmt | assgstmt | compoundstmt
+compoundstmt -> { stmts }
+stmts -> stmt stmts | E
+ifstmt -> if ( boolexpr ) then stmt else stmt
+whilestmt -> while ( boolexpr ) stmt
+assgstmt -> ID = arithexpr ;
+boolexpr -> arithexpr boolop arithexpr
+boolop -> < | > | <= | >= | ==
+arithexpr -> multexpr arithexprprime
+arithexprprime -> + multexpr arithexprprime | - multexpr arithexprprime | E
+multexpr -> simpleexpr multexprprime
+multexprprime -> * simpleexpr multexprprime | / simpleexpr multexprprime | E
+simpleexpr -> ID | NUM | ( arithexpr )
+起始符
+program
+
+保留字
+{ }
+if ( ) then else
+while ( )
+ID = 
+> < >= <= ==
++ -
+* /
+ID NUM
+E 是'空'
+分隔方式
+同一行的输入字符用一个空格字符分隔，例如： ID = NUM ; 
+
+错误处理
+本实验需要考虑错误处理，如果程序不正确（包含语法错误），它应该打印语法错误消息（与行号一起），并且程序应该修正错误，并继续解析。
+例如：
+
+语法错误,第4行,缺少";"
+输入
+要求：在同一行中每个输入字符用一个空格字符分隔，无其余无关符号。
+
+
+
+
+
+对于正确的程序，输出该程序的最右推导过程
+
+对于有错误的的程序，输出错误问题并改正，继续输出正确的最右推导
+
+每一组串之间均有一个空格符相隔开，分号，括号，=>符号后均有一个空格符隔开，每一句推导只占一行  
+
