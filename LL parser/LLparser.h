@@ -43,6 +43,8 @@ void insert_table(){//insert strings in reverse
 	table[9][4]={"arithexprprime","multexpr"};
 	table[9][5]={"arithexprprime","multexpr"};
 	table[10][6]={"E"};
+	table[10][7]={"E"};
+	table[10][8]={"E"};
 	table[10][9]={"arithexprprime","multexpr","+"};
 	table[10][10]={"arithexprprime","multexpr","-"};
 	table[10][12]={"E"};
@@ -52,6 +54,8 @@ void insert_table(){//insert strings in reverse
 	table[12][6]={"E"};
 	table[12][7]={"multexprprime","simpleexpr","*"};
 	table[12][8]={"multexprprime","simpleexpr","/"};
+	table[12][9]={"E"};
+	table[12][10]={"E"};
 	table[12][12]={"E"};
 	table[12][15]={"E"};
 	table[13][4]={"ID"};
@@ -95,6 +99,7 @@ void println(const string &str,int layer){
 	}
 	tmp+=str;
 	ans.push_back(tmp);
+	stk.pop(); //the word has been dealt
 }
 
 void error(string &lost,int line){
@@ -110,26 +115,21 @@ void LLparse(string &prog){
 
 				string str=stk.top().first;
 				int layer=stk.top().second;
-				// auto [str,layer]=stk.top();
 				if(str=="E"){
 					println(str,layer);
-					stk.pop();
 					continue ;
 				}
 				if(TERMINALS.find(str)!=TERMINALS.end()){//str is a terminal
 					if(str!=now){
 						error(str,i); //index starts from 0 but the loss is before.
-						stk.pop();
 						println(str,layer);
 						continue;
 					}
 					else{
 						println(str,layer);
-						stk.pop();
 						break;
 					}
 				}
-				stk.pop();
 				
 				println(str,layer);
 				int row=NONTERMINALS[str],col=TERMINALS[now];
@@ -159,7 +159,6 @@ void Analysis()
 	/* 骚年�? 请开始你们的表演 */
     /********* Begin *********/
     init(prog);
-	// prog+=" $";
     LLparse(prog);
 	for(const string &s:ans){
 		cout<<s<<endl;
