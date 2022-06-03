@@ -1,4 +1,4 @@
-// C语言词法分析�?
+// C语言词法分析�?
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -15,7 +15,7 @@ using namespace std;
 /* 不要修改这个标准输入函数 */
 unordered_map<string,int> TERMINALS,NONTERMINALS;
 vector<vector<vector<string>>> table;
-stack<pair<string,int>> stk;
+stack<pair<string,int>> stk; // content line
 vector<string> words,ans;
 
 void insert_table(){//insert strings in reverse
@@ -103,7 +103,7 @@ void println(const string &str,int layer){
 }
 
 void error(string &lost,int line){
-	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
+	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
 }
 
 void LLparse(string &prog){
@@ -149,14 +149,14 @@ void read_prog(string& prog)
 		prog += c;
 	}
 }
-/* 你可以添加其他函�? */
+/* 你可以添加其他函�? */
 
 void Analysis()
 {
 	string prog;
 	read_prog(prog);
 	
-	/* 骚年�? 请开始你们的表演 */
+	/* 骚年�? 请开始你们的表演 */
     /********* Begin *********/
     init(prog);
     LLparse(prog);
