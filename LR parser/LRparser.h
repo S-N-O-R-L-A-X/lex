@@ -13,17 +13,17 @@
 #include <stack>
 using namespace std;
 
-class Word {
-public:
-	int flag;//1 is shift,0 is reduce
-	int state;
-	vector<string> left;
-	Word(int _flag=1,int _state=-1,vector<string> &_left={}){
-		flag = _flag;
-		state=_state;
-		left=_left;
-	}
-};
+// class Word {
+// public:
+// 	int flag;//1 is shift,0 is reduce
+// 	int state;
+// 	vector<string> left;
+// 	Word(int _flag=1,int _state=-1,vector<string> &_left={}){
+// 		flag = _flag;
+// 		state=_state;
+// 		left=_left;
+// 	}
+// };
 
 
 unordered_map<string,int> TERMINALS,NONTERMINALS;
@@ -94,7 +94,7 @@ void split(string &prog){
 void init(string &prog){
     NONTERMINALS={{"program",0},{"stmt",1},{"compoundstmt",2},{"stmts",3},{"ifstmt",4},{"whilestmt",5},{"assgstmt",6},{"boolexpr",7},{"boolop",8},{"arithexpr",9},{"arithexprprime",10},{"multexpr",11},{"multexprprime",12},{"simpleexpr",13}};
 	TERMINALS={{"{",0},{"}",1},{"while",2},{"if",3},{"ID",4},{"NUM",5},{";",6},{"*",7},{"/",8},{"+",9},{"-",10},{"(",11},{")",12},{">",13},{"<",14},{"==",15},{"<=",16},{">=",17},{"=",18},{"then",19},{"else",20},{"$",21}};
-	// split(prog);
+	split(prog);
 	actionTable.resize(100,vector<pair<int,vector<string>>>(22));
     gotoTable.resize(100,vector<int>(14));
 	create_table();
@@ -105,7 +105,7 @@ void println(const string &str){
 	string tmp="";
 	tmp+=str;
 	ans.push_back(tmp);
-	stk.pop(); //the word has been dealt
+	// stk.pop(); //the word has been dealt
 }
 
 void error(string &lost,int line){
@@ -137,13 +137,14 @@ void LRparse(string &prog){
 							stk.pop();
 						}
 
+						int col=TERMINALS[left[0]],go=gotoTable[state][col];
+						stk.push({left[0],go});
 					}
 				}
 				else{
 					error(now,i);
 				}
-				println(str);
-				int row=NONTERMINALS[str],col=TERMINALS[now];
+				
 				// for(const auto pr:gotoTable[row][col]){
                 //     cout<<"hi";
 				// 	stk.push({s,layer+1});
