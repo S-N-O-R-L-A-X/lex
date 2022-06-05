@@ -45,9 +45,11 @@ void create_action_table(){
 
 	actionTable[17][5]={23,""};
 
+	actionTable[21][6]={1,"multexprprime"};
+
 	actionTable[23][6]={1,"simpleexpr"};
 
-
+	actionTable[26][6]={57,""};
 }
 
 
@@ -171,26 +173,27 @@ void LRparse(string &prog){
 		string now;
 		while(ss>>now){
 			
-
+			while(true){
 				string str=stk.top().first;
 				int state=stk.top().second;
-				// if(str=="E"){
-				// 	println(str);
-				// 	continue ;
-				// }
+				if(str=="E"){
+					println(str);
+					continue ;
+				}
 				if(TERMINALS.find(now)!=TERMINALS.end()){//now can be identified
 					int idx=TERMINALS[now];
 					int num=actionTable[state][idx].first;
 					string left=actionTable[state][idx].second;
 					if(left.size()==0){ //shift
 						stk.push({now,num});
+						break ;
 					}
 					else{ //reduce
 						while(num--){
 							stk.pop();
 						}
 						println(actionTable[state][idx].second);
-						int col=TERMINALS[left],go=gotoTable[stk.top().second][col];
+						int col=NONTERMINALS[left],go=gotoTable[stk.top().second][col];
 						stk.push({left,go});
 					}
 				}
@@ -202,6 +205,7 @@ void LRparse(string &prog){
                 //     cout<<"hi";
 				// 	stk.push({s,layer+1});
 				// }
+			}
 			
 		}
 	}
