@@ -41,15 +41,47 @@ void create_action_table(){
 	
 	actionTable[3][4]={12,""};
 
+	actionTable[4][1]={13,""};
+
+	actionTable[5][1]={0,"stmts"};
+
+	actionTable[6][1]={1,"stmt"};
+	actionTable[7][1]={1,"stmt"};
+	actionTable[8][1]={1,"stmt"};
+	actionTable[9][1]={1,"stmt"};
+
 	actionTable[12][18]={17,""};
+
+	actionTable[13][21]={3,"compoundstmt"};
+
+	actionTable[14][1]={2,"stmts"};
 
 	actionTable[17][5]={23,""};
 
-	actionTable[21][6]={1,"multexprprime"};
+	actionTable[20][1]={0,"arithexprprime"};
+	actionTable[20][6]={0,"arithexprprime"};
+	actionTable[20][9]={35,""};
+	actionTable[20][10]={36,""};
+	actionTable[20][12]={0,"arithexprprime"};
+	actionTable[20][13]={0,"arithexprprime"};
+	actionTable[20][14]={0,"arithexprprime"};
+	actionTable[20][15]={0,"arithexprprime"};
+	actionTable[20][16]={0,"arithexprprime"};
+	actionTable[20][17]={0,"arithexprprime"};
+	actionTable[20][20]={0,"arithexprprime"};
+
+	actionTable[21][6]={0,"multexprprime"};
+	// actionTable[21][6]={36,""};
 
 	actionTable[23][6]={1,"simpleexpr"};
 
 	actionTable[26][6]={57,""};
+
+	actionTable[34][6]={2,"arithexpr"};
+
+	actionTable[37][6]={2,"multexpr"};
+
+	actionTable[57][1]={4,"assgstmt"};
 }
 
 
@@ -80,7 +112,7 @@ void create_goto_table(){
 	gotoTable[16][9]=19;
 	gotoTable[16][11]=20;
 	gotoTable[16][13]=21;
-	gotoTable[17][9]=19;
+	gotoTable[17][9]=26;
 	gotoTable[17][11]=20;
 	gotoTable[17][13]=21;
 	gotoTable[19][8]=28;
@@ -163,6 +195,36 @@ void println(const string &str){
 	// stk.pop(); //the word has been dealt
 }
 
+void reduce(int pop_num){
+	if(ans.empty()){
+		vector<string> vec;
+		string tmp="";
+		while(pop_num--){
+			vec.push_back(stk.top().first);
+			stk.pop();
+		}
+		for(int i=vec.size()-1;i>=0;--i){
+			tmp+=vec[i]+' ';
+		}
+		tmp+="=>";
+		ans.push_back(tmp);
+	}
+	else{
+		vector<string> vec;
+		string last=ans.back(),tmp="";
+		while(pop_num--){
+			vec.push_back(stk.top().first);
+			stk.pop();
+		}
+		for(int i=vec.size()-1;i>=0;--i){
+			tmp+=vec[i]+' ';
+		}
+
+		ans.push_back(tmp);
+	}
+}
+	
+
 void error(string &lost,int line){
 	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
 }
@@ -173,26 +235,23 @@ void LRparse(string &prog){
 		string now;
 		while(ss>>now){
 			
-			while(true){
+			while(stk.top().first!="acc"){
 				string str=stk.top().first;
 				int state=stk.top().second;
-				if(str=="E"){
-					println(str);
-					continue ;
-				}
+				// if(str=="E"){
+				// 	println(str);
+				// 	continue ;
+				// }
 				if(TERMINALS.find(now)!=TERMINALS.end()){//now can be identified
 					int idx=TERMINALS[now];
 					int num=actionTable[state][idx].first;
 					string left=actionTable[state][idx].second;
-					if(left.size()==0){ //shift
+					if(left.size()==0){ // shift
 						stk.push({now,num});
 						break ;
 					}
-					else{ //reduce
-						while(num--){
-							stk.pop();
-						}
-						println(actionTable[state][idx].second);
+					else{ // reduce
+						reduce(num);
 						int col=NONTERMINALS[left],go=gotoTable[stk.top().second][col];
 						stk.push({left,go});
 					}
@@ -208,6 +267,9 @@ void LRparse(string &prog){
 			}
 			
 		}
+		// if(i==words.size()){ //deal the rest
+			
+		// }
 	}
 }
 
@@ -229,6 +291,7 @@ void Analysis()
     /* 骚年们 请开始你们的表演 */
     /********* Begin *********/
     init(prog);
+	words.push_back("$");
     LRparse(prog);
 	for(const string &s:ans){
 		cout<<s<<endl;
