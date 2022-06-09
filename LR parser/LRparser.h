@@ -37,25 +37,60 @@ void create_action_table(){
     actionTable[0][0]={3,""};
     actionTable[1][21]={1,"acc"};
 	actionTable[2][21]={1,"program"};
-	
+
+	actionTable[3][0]={3,""};
+	actionTable[3][1]={0,"stmts"};
+	actionTable[3][2]={11,""};
+	actionTable[3][3]={10,""};
 	actionTable[3][4]={12,""};
+	
 
 	actionTable[4][1]={13,""};
+	actionTable[5][0]={3,""};
 
 	actionTable[5][1]={0,"stmts"};
+	actionTable[5][2]={11,""};
+	actionTable[5][3]={10,""};
+	actionTable[5][4]={12,""};
 
 	actionTable[6][1]={1,"stmt"};
+	actionTable[6][20]={1,"stmt"};
 	actionTable[7][1]={1,"stmt"};
+	actionTable[7][20]={1,"stmt"};
 	actionTable[8][1]={1,"stmt"};
+	actionTable[8][20]={1,"stmt"};
 	actionTable[9][1]={1,"stmt"};
+	actionTable[9][20]={1,"stmt"};
+
+	actionTable[10][11]={15,""};
+	actionTable[11][11]={16,""};
 
 	actionTable[12][18]={17,""};
 
+	actionTable[13][1]={3,"compoundstmt"};
+	actionTable[13][20]={3,"compoundstmt"};
 	actionTable[13][21]={3,"compoundstmt"};
 
 	actionTable[14][1]={2,"stmts"};
 
+	actionTable[15][4]={22,""};
+	actionTable[15][5]={23,""};
+	actionTable[15][11]={24,""};
+	actionTable[16][4]={22,""};
+	actionTable[16][5]={23,""};
+	actionTable[16][11]={24,""};
+	actionTable[17][4]={22,""};
 	actionTable[17][5]={23,""};
+	actionTable[17][11]={24,""};
+
+	actionTable[18][1]={27,""};
+
+	actionTable[19][13]={30,""};
+	actionTable[19][14]={29,""};
+	actionTable[19][15]={33,""};
+	actionTable[19][16]={31,""};
+	actionTable[19][17]={32,""};
+
 
 	actionTable[20][1]={0,"arithexprprime"};
 	actionTable[20][6]={0,"arithexprprime"};
@@ -69,16 +104,206 @@ void create_action_table(){
 	actionTable[20][17]={0,"arithexprprime"};
 	actionTable[20][20]={0,"arithexprprime"};
 
+	actionTable[21][1]={0,"multexprprime"};
 	actionTable[21][6]={0,"multexprprime"};
-	// actionTable[21][6]={36,""};
+	actionTable[21][7]={38,""};
+	actionTable[21][8]={39,""};
+	actionTable[21][9]={0,"multexprprime"};
+	actionTable[21][10]={0,"multexprprime"};
+	actionTable[21][12]={0,"multexprprime"};
+	actionTable[21][13]={0,"multexprprime"};
+	actionTable[21][14]={0,"multexprprime"};
+	actionTable[21][15]={0,"multexprprime"};
+	actionTable[21][16]={0,"multexprprime"};
+	actionTable[21][17]={0,"multexprprime"};
+	actionTable[21][20]={0,"multexprprime"};
 
+	actionTable[22][1]={1,"simpleexpr"};
+	actionTable[22][6]={1,"simpleexpr"};
+	actionTable[22][7]={1,"simpleexpr"};
+	actionTable[22][8]={1,"simpleexpr"};
+	actionTable[22][9]={1,"simpleexpr"};
+	actionTable[22][10]={1,"simpleexpr"};
+	actionTable[22][12]={3,"simpleexpr"};
+	actionTable[22][13]={1,"simpleexpr"};
+	actionTable[22][14]={1,"simpleexpr"};
+	actionTable[22][15]={1,"simpleexpr"};
+	actionTable[22][16]={1,"simpleexpr"};
+	actionTable[22][17]={1,"simpleexpr"};
+	actionTable[22][20]={1,"simpleexpr"};
+
+	actionTable[23][1]={1,"simpleexpr"};
 	actionTable[23][6]={1,"simpleexpr"};
+	actionTable[23][7]={1,"simpleexpr"};
+	actionTable[23][8]={1,"simpleexpr"};
+	actionTable[23][9]={1,"simpleexpr"};
+	actionTable[23][10]={1,"simpleexpr"};
+	actionTable[23][12]={3,"simpleexpr"};
+	actionTable[23][13]={1,"simpleexpr"};
+	actionTable[23][14]={1,"simpleexpr"};
+	actionTable[23][15]={1,"simpleexpr"};
+	actionTable[23][16]={1,"simpleexpr"};
+	actionTable[23][17]={1,"simpleexpr"};
+	actionTable[23][20]={1,"simpleexpr"};
 
+	actionTable[24][11]={24,""};
+	actionTable[25][12]={39,""};
 	actionTable[26][6]={57,""};
+	actionTable[27][19]={42,""};
+	actionTable[28][4]={22,""};
+	actionTable[28][5]={23,""};
+	actionTable[28][11]={24,""};
 
+	actionTable[29][4]={1,"boolop"};
+	actionTable[29][5]={1,"boolop"};
+	actionTable[29][11]={1,"boolop"};
+
+	actionTable[30][4]={1,"boolop"};
+	actionTable[30][5]={1,"boolop"};
+	actionTable[30][11]={1,"boolop"};
+
+	actionTable[31][4]={2,"boolop"};
+	actionTable[31][5]={2,"boolop"};
+	actionTable[31][11]={2,"boolop"};
+
+	actionTable[32][4]={2,"boolop"};
+	actionTable[32][5]={2,"boolop"};
+	actionTable[32][11]={2,"boolop"};
+
+	actionTable[33][4]={2,"boolop"};
+	actionTable[33][5]={2,"boolop"};
+	actionTable[33][11]={2,"boolop"};
+
+	actionTable[34][1]={2,"arithexpr"};
 	actionTable[34][6]={2,"arithexpr"};
+	actionTable[34][12]={2,"arithexpr"};
+	actionTable[34][13]={2,"arithexpr"};
+	actionTable[34][14]={2,"arithexpr"};
+	actionTable[34][15]={2,"arithexpr"};
+	actionTable[34][16]={2,"arithexpr"};
+	actionTable[34][17]={2,"arithexpr"};
+	actionTable[34][20]={2,"arithexpr"};
 
+
+	actionTable[35][4]={22,""};
+	actionTable[35][5]={23,""};
+	actionTable[35][11]={24,""};
+	actionTable[36][4]={22,""};
+	actionTable[36][5]={23,""};
+	actionTable[36][11]={24,""};
+
+	actionTable[37][1]={2,"multexpr"};
 	actionTable[37][6]={2,"multexpr"};
+	actionTable[37][12]={2,"multexpr"};
+	actionTable[37][13]={2,"multexpr"};
+	actionTable[37][14]={2,"multexpr"};
+	actionTable[37][15]={2,"multexpr"};
+	actionTable[37][16]={2,"multexpr"};
+	actionTable[37][17]={2,"multexpr"};
+	actionTable[37][20]={2,"multexpr"};
+
+	actionTable[38][4]={22,""};
+	actionTable[38][5]={23,""};
+	actionTable[38][11]={24,""};
+	actionTable[39][4]={22,""};
+	actionTable[39][5]={23,""};
+	actionTable[39][11]={24,""};
+
+	actionTable[40][0]={3,""};
+	actionTable[40][2]={11,""};
+	actionTable[40][3]={10,""};
+	actionTable[40][4]={12,""};
+
+	actionTable[41][12]={49,""};
+
+	actionTable[42][0]={3,""};
+	actionTable[42][2]={11,""};
+	actionTable[42][3]={10,""};
+	actionTable[42][4]={12,""};	
+	
+	actionTable[43][12]={1,"boolexpr"};
+
+	actionTable[44][9]={35,""};
+	actionTable[44][10]={36,""};
+	actionTable[45][9]={35,""};
+	actionTable[45][10]={36,""};
+
+	actionTable[46][7]={38,""};
+	actionTable[46][8]={39,""};
+	actionTable[47][7]={38,""};
+	actionTable[47][8]={39,""};
+
+	actionTable[48][1]={1,"whilestmt"};
+	actionTable[48][20]={1,"whilestmt"};
+
+	actionTable[49][20]={55,""};
+
+	actionTable[50][1]={1,"simpleexpr"};
+	actionTable[50][6]={1,"simpleexpr"};
+	actionTable[50][7]={1,"simpleexpr"};
+	actionTable[50][8]={1,"simpleexpr"};
+	actionTable[50][9]={1,"simpleexpr"};
+	actionTable[50][10]={1,"simpleexpr"};
+	actionTable[50][12]={3,"simpleexpr"};
+	actionTable[50][13]={1,"simpleexpr"};
+	actionTable[50][14]={1,"simpleexpr"};
+	actionTable[50][15]={1,"simpleexpr"};
+	actionTable[50][16]={1,"simpleexpr"};
+	actionTable[50][17]={1,"simpleexpr"};
+	actionTable[50][20]={1,"simpleexpr"};
+
+	actionTable[51][1]={0,"arithexprprime"};
+	actionTable[51][6]={0,"arithexprprime"};
+	actionTable[51][12]={0,"arithexprprime"};
+	actionTable[51][13]={0,"arithexprprime"};
+	actionTable[51][14]={0,"arithexprprime"};
+	actionTable[51][15]={0,"arithexprprime"};
+	actionTable[51][16]={0,"arithexprprime"};
+	actionTable[51][17]={0,"arithexprprime"};
+	actionTable[51][20]={0,"arithexprprime"};
+
+	actionTable[52][1]={0,"arithexprprime"};
+	actionTable[52][6]={0,"arithexprprime"};
+	actionTable[52][12]={0,"arithexprprime"};
+	actionTable[52][13]={0,"arithexprprime"};
+	actionTable[52][14]={0,"arithexprprime"};
+	actionTable[52][15]={0,"arithexprprime"};
+	actionTable[52][16]={0,"arithexprprime"};
+	actionTable[52][17]={0,"arithexprprime"};
+	actionTable[52][20]={0,"arithexprprime"};
+
+	actionTable[53][1]={0,"multexprprime"};
+	actionTable[53][6]={0,"multexprprime"};
+	actionTable[53][9]={0,"multexprprime"};
+	actionTable[53][10]={0,"multexprprime"};
+	actionTable[53][12]={0,"multexprprime"};
+	actionTable[53][13]={0,"multexprprime"};
+	actionTable[53][14]={0,"multexprprime"};
+	actionTable[53][15]={0,"multexprprime"};
+	actionTable[53][16]={0,"multexprprime"};
+	actionTable[53][17]={0,"multexprprime"};
+	actionTable[53][20]={0,"multexprprime"};
+
+	actionTable[54][1]={0,"multexprprime"};
+	actionTable[54][6]={0,"multexprprime"};
+	actionTable[54][9]={0,"multexprprime"};
+	actionTable[54][10]={0,"multexprprime"};
+	actionTable[54][12]={0,"multexprprime"};
+	actionTable[54][13]={0,"multexprprime"};
+	actionTable[54][14]={0,"multexprprime"};
+	actionTable[54][15]={0,"multexprprime"};
+	actionTable[54][16]={0,"multexprprime"};
+	actionTable[54][17]={0,"multexprprime"};
+	actionTable[54][20]={0,"multexprprime"};
+
+
+	actionTable[55][0]={3,""};
+	actionTable[55][2]={11,""};
+	actionTable[55][3]={10,""};
+	actionTable[55][4]={12,""};
+
+	actionTable[56][1]={8,"ifstmt"};
+	actionTable[56][20]={8,"ifstmt"};
 
 	actionTable[57][1]={4,"assgstmt"};
 }
