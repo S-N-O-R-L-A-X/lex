@@ -30,8 +30,7 @@ unordered_map<string,int> TERMINALS,NONTERMINALS;
 vector<vector<pair<int,string>>> actionTable; //shift : the state reduce: pop,add
 vector<vector<int>> gotoTable;
 stack<pair<string,int>> stk;
-vector<string> words,ans;
-
+vector<string> words,ans,oldString,newString;
 
 
 void create_action_table(){
@@ -195,35 +194,43 @@ void println(const string &str){
 	// stk.pop(); //the word has been dealt
 }
 
-void reduce(int pop_num){
-	if(ans.empty()){
-		vector<string> vec;
-		string tmp="";
-		while(pop_num--){
-			vec.push_back(stk.top().first);
-			stk.pop();
-		}
-		for(int i=vec.size()-1;i>=0;--i){
-			tmp+=vec[i]+' ';
-		}
-		tmp+="=>";
-		ans.push_back(tmp);
+void reduce(int pop_num,const string &left){
+	vector<string> vec;
+	string tmp="";
+	while(pop_num--){
+		vec.push_back(stk.top().first);
+		stk.pop();
 	}
-	else{
-		vector<string> vec;
-		string last=ans.back(),tmp="";
-		while(pop_num--){
-			vec.push_back(stk.top().first);
-			stk.pop();
-		}
-		for(int i=vec.size()-1;i>=0;--i){
-			tmp+=vec[i]+' ';
-		}
-
-		ans.push_back(tmp);
+	for(int i=vec.size()-1;i>=0;--i){
+		tmp+=vec[i]+' ';
 	}
+	if(!tmp.empty()){
+		tmp.pop_back();
+	}
+	
+	oldString.push_back(left);
+	newString.push_back(tmp);
 }
 	
+void old2new(){
+	int n=newString.size()-1;
+	ans.push_back("program =>");
+	for(int i=n;i>=1;--i){
+		string s=ans[n-i];
+		int pos=s.rfind(oldString[i-1]);
+		if(newString[i-1].empty()){ //reduce by a->ab
+			s.replace(pos,oldString[i-1].size()+1,newString[i-1]);
+		}
+		else{
+			s.replace(pos,oldString[i-1].size(),newString[i-1]);
+		}
+		if(i==1){
+			s=s.substr(0,s.size()-3); //pop back => in the last string
+		}
+		ans.push_back(s);
+	}
+	
+}
 
 void error(string &lost,int line){
 	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
@@ -251,7 +258,7 @@ void LRparse(string &prog){
 						break ;
 					}
 					else{ // reduce
-						reduce(num);
+						reduce(num,left);
 						int col=NONTERMINALS[left],go=gotoTable[stk.top().second][col];
 						stk.push({left,go});
 					}
@@ -259,17 +266,9 @@ void LRparse(string &prog){
 				else{
 					error(now,i);
 				}
-				
-				// for(const auto pr:gotoTable[row][col]){
-                //     cout<<"hi";
-				// 	stk.push({s,layer+1});
-				// }
 			}
 			
 		}
-		// if(i==words.size()){ //deal the rest
-			
-		// }
 	}
 }
 
@@ -293,6 +292,7 @@ void Analysis()
     init(prog);
 	words.push_back("$");
     LRparse(prog);
+	old2new();
 	for(const string &s:ans){
 		cout<<s<<endl;
 	}
