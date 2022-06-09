@@ -411,14 +411,6 @@ void init(string &prog){
 	stk.push({"start",0});
 }
 
-void println(const string &str){
-	string tmp="";
-	tmp+=str;
-	tmp+=" =>";
-	ans.push_back(tmp);
-	// stk.pop(); //the word has been dealt
-}
-
 void reduce(int pop_num,const string &left){
 	vector<string> vec;
 	string tmp="";
