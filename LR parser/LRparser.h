@@ -138,7 +138,7 @@ void create_action_table(){
 	actionTable[23][8]={1,"simpleexpr"};
 	actionTable[23][9]={1,"simpleexpr"};
 	actionTable[23][10]={1,"simpleexpr"};
-	actionTable[23][12]={3,"simpleexpr"};
+	actionTable[23][12]={1,"simpleexpr"};
 	actionTable[23][13]={1,"simpleexpr"};
 	actionTable[23][14]={1,"simpleexpr"};
 	actionTable[23][15]={1,"simpleexpr"};
@@ -147,7 +147,7 @@ void create_action_table(){
 	actionTable[23][20]={1,"simpleexpr"};
 
 	actionTable[24][11]={24,""};
-	actionTable[25][12]={39,""};
+	actionTable[25][12]={40,""};
 	actionTable[26][6]={57,""};
 	actionTable[27][19]={42,""};
 	actionTable[28][4]={22,""};
@@ -162,17 +162,17 @@ void create_action_table(){
 	actionTable[30][5]={1,"boolop"};
 	actionTable[30][11]={1,"boolop"};
 
-	actionTable[31][4]={2,"boolop"};
-	actionTable[31][5]={2,"boolop"};
-	actionTable[31][11]={2,"boolop"};
+	actionTable[31][4]={1,"boolop"};
+	actionTable[31][5]={1,"boolop"};
+	actionTable[31][11]={1,"boolop"};
 
-	actionTable[32][4]={2,"boolop"};
-	actionTable[32][5]={2,"boolop"};
-	actionTable[32][11]={2,"boolop"};
+	actionTable[32][4]={1,"boolop"};
+	actionTable[32][5]={1,"boolop"};
+	actionTable[32][11]={1,"boolop"};
 
-	actionTable[33][4]={2,"boolop"};
-	actionTable[33][5]={2,"boolop"};
-	actionTable[33][11]={2,"boolop"};
+	actionTable[33][4]={1,"boolop"};
+	actionTable[33][5]={1,"boolop"};
+	actionTable[33][11]={1,"boolop"};
 
 	actionTable[34][1]={2,"arithexpr"};
 	actionTable[34][6]={2,"arithexpr"};
@@ -194,6 +194,8 @@ void create_action_table(){
 
 	actionTable[37][1]={2,"multexpr"};
 	actionTable[37][6]={2,"multexpr"};
+	actionTable[37][9]={2,"multexpr"};
+	actionTable[37][10]={2,"multexpr"};
 	actionTable[37][12]={2,"multexpr"};
 	actionTable[37][13]={2,"multexpr"};
 	actionTable[37][14]={2,"multexpr"};
@@ -221,20 +223,41 @@ void create_action_table(){
 	actionTable[42][3]={10,""};
 	actionTable[42][4]={12,""};	
 	
-	actionTable[43][12]={1,"boolexpr"};
+	actionTable[43][12]={3,"boolexpr"};
 
+	actionTable[44][1]={0,"arithexprprime"};
+	actionTable[44][6]={0,"arithexprprime"};
 	actionTable[44][9]={35,""};
 	actionTable[44][10]={36,""};
+	actionTable[44][12]={0,"arithexprprime"};
+	actionTable[44][13]={0,"arithexprprime"};
+	actionTable[44][14]={0,"arithexprprime"};
+	actionTable[44][15]={0,"arithexprprime"};
+	actionTable[44][16]={0,"arithexprprime"};
+	actionTable[44][17]={0,"arithexprprime"};
+	actionTable[44][20]={0,"arithexprprime"};
+
+
+	actionTable[45][1]={0,"arithexprprime"};
+	actionTable[45][6]={0,"arithexprprime"};
 	actionTable[45][9]={35,""};
 	actionTable[45][10]={36,""};
+	actionTable[45][12]={0,"arithexprprime"};
+	actionTable[45][13]={0,"arithexprprime"};
+	actionTable[45][14]={0,"arithexprprime"};
+	actionTable[45][15]={0,"arithexprprime"};
+	actionTable[45][16]={0,"arithexprprime"};
+	actionTable[45][17]={0,"arithexprprime"};
+	actionTable[45][20]={0,"arithexprprime"};
+	
 
 	actionTable[46][7]={38,""};
 	actionTable[46][8]={39,""};
 	actionTable[47][7]={38,""};
 	actionTable[47][8]={39,""};
 
-	actionTable[48][1]={1,"whilestmt"};
-	actionTable[48][20]={1,"whilestmt"};
+	actionTable[48][1]={5,"whilestmt"};
+	actionTable[48][20]={5,"whilestmt"};
 
 	actionTable[49][20]={55,""};
 
@@ -348,7 +371,7 @@ void create_goto_table(){
 	gotoTable[24][11]=20;
 	gotoTable[24][13]=21;
 
-	gotoTable[28][9]=42;
+	gotoTable[28][9]=43;
 	gotoTable[28][11]=20;
 	gotoTable[28][13]=21;
 	gotoTable[35][11]=44;
@@ -450,7 +473,7 @@ void old2new(){
 }
 
 void error(string &lost,int line){
-	cout<<"�﷨����,��"+to_string(line)+"��,ȱ��\""+lost+"\""<<endl;
+	cout<<"语法错误,第"+to_string(line)+"行,缺少\""+lost+"\""<<endl;
 }
 
 void LRparse(string &prog){
@@ -471,12 +494,21 @@ void LRparse(string &prog){
 					int num=actionTable[state][idx].first;
 					string left=actionTable[state][idx].second;
 					if(left.size()==0){ // shift
+						if(num==0){ 
+							string lost=";";
+							stk.push({lost,actionTable[state][6].first});
+							error(lost,i);
+							continue ;
+						}
 						stk.push({now,num});
 						break ;
 					}
 					else{ // reduce
 						reduce(num,left);
 						int col=NONTERMINALS[left],go=gotoTable[stk.top().second][col];
+						if(go==0){ 
+							error(left,i);
+						}
 						stk.push({left,go});
 					}
 				}
