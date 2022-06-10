@@ -27,35 +27,20 @@ ID = ID + NUM ;
 
 expect:
 program => 
-
 compoundstmt => 
-
 { stmts } => 
-
 { stmt stmts } => 
-
 { stmt } => 
-
 { assgstmt } => 
-
 { ID = arithexpr ; } => 
-
 { ID = multexpr arithexprprime ; } => 
-
 { ID = multexpr + multexpr arithexprprime ; } => 
-
 { ID = multexpr + multexpr ; } => 
-
 { ID = multexpr + simpleexpr multexprprime ; } => 
-
 { ID = multexpr + simpleexpr ; } => 
-
 { ID = multexpr + NUM ; } => 
-
 { ID = simpleexpr multexprprime + NUM ; } => 
-
 { ID = simpleexpr + NUM ; } => 
-
 { ID = ID + NUM ; } 
 
 example 3:

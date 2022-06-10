@@ -1,4 +1,4 @@
-// C�?言词法分析�?
+// C语言词法分析器
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -275,25 +275,25 @@ void create_action_table(){
 	actionTable[50][17]={1,"simpleexpr"};
 	actionTable[50][20]={1,"simpleexpr"};
 
-	actionTable[51][1]={3,"arithexprprime"};
-	actionTable[51][6]={3,"arithexprprime"};
-	actionTable[51][12]={3,"arithexprprime"};
-	actionTable[51][13]={3,"arithexprprime"};
-	actionTable[51][14]={3,"arithexprprime"};
-	actionTable[51][15]={3,"arithexprprime"};
-	actionTable[51][16]={3,"arithexprprime"};
-	actionTable[51][17]={3,"arithexprprime"};
-	actionTable[51][20]={3,"arithexprprime"};
+	actionTable[51][1]={0,"arithexprprime"};
+	actionTable[51][6]={0,"arithexprprime"};
+	actionTable[51][12]={0,"arithexprprime"};
+	actionTable[51][13]={0,"arithexprprime"};
+	actionTable[51][14]={0,"arithexprprime"};
+	actionTable[51][15]={0,"arithexprprime"};
+	actionTable[51][16]={0,"arithexprprime"};
+	actionTable[51][17]={0,"arithexprprime"};
+	actionTable[51][20]={0,"arithexprprime"};
 
-	actionTable[52][1]={3,"arithexprprime"};
-	actionTable[52][6]={3,"arithexprprime"};
-	actionTable[52][12]={3,"arithexprprime"};
-	actionTable[52][13]={3,"arithexprprime"};
-	actionTable[52][14]={3,"arithexprprime"};
-	actionTable[52][15]={3,"arithexprprime"};
-	actionTable[52][16]={3,"arithexprprime"};
-	actionTable[52][17]={3,"arithexprprime"};
-	actionTable[52][20]={3,"arithexprprime"};
+	actionTable[52][1]={0,"arithexprprime"};
+	actionTable[52][6]={0,"arithexprprime"};
+	actionTable[52][12]={0,"arithexprprime"};
+	actionTable[52][13]={0,"arithexprprime"};
+	actionTable[52][14]={0,"arithexprprime"};
+	actionTable[52][15]={0,"arithexprprime"};
+	actionTable[52][16]={0,"arithexprprime"};
+	actionTable[52][17]={0,"arithexprprime"};
+	actionTable[52][20]={0,"arithexprprime"};
 
 	actionTable[53][1]={0,"multexprprime"};
 	actionTable[53][6]={0,"multexprprime"};
@@ -390,10 +390,10 @@ void create_goto_table(){
 	gotoTable[42][5]=7;
 	gotoTable[42][6]=8;
 
-	gotoTable[44][10]=51;
-	gotoTable[45][10]=52;
-	gotoTable[46][12]=53;
-	gotoTable[47][13]=54;
+	gotoTable[44][10]=50;
+	gotoTable[45][10]=51;
+	gotoTable[46][12]=52;
+	gotoTable[47][13]=53;
 	
 	gotoTable[55][1]=56;
 	gotoTable[55][2]=9;
@@ -473,7 +473,8 @@ void old2new(){
 }
 
 void error(string &lost,int line){
-	cout<<"�﷨���󣬵�"+to_string(line)+"�У�ȱ��\""+lost+"\""<<endl;
+	cout<<"语法错误,第"+to_string(line)+"行,缺少\""+lost+"\""<<endl;
+	cout<<"\n";
 }
 
 void LRparse(string &prog){
@@ -522,7 +523,7 @@ void LRparse(string &prog){
 }
 
 
-/* 不�?�修改这�?标准输入函数 */
+/* 不要修改这个标准输入函数 */
 void read_prog(string& prog)
 {
     char c;
@@ -530,13 +531,13 @@ void read_prog(string& prog)
         prog += c;
     }
 }
-/* 你可以添加其他函�? */
+/* 你可以添加其他函数 */
 
 void Analysis()
 {
     string prog;
     read_prog(prog);
-    /* 骚年�? 请开始你�?的表�? */
+    /* 骚年们 请开始你们的表演 */
     /********* Begin *********/
     init(prog);
 	words.push_back("$");
