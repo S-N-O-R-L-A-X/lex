@@ -11,20 +11,8 @@
 #include <unordered_set>
 #include <string>
 #include <stack>
+#define endl "\n"<<flush
 using namespace std;
-
-// class Word {
-// public:
-// 	int flag;//1 is shift,0 is reduce
-// 	int state;
-// 	vector<string> left;
-// 	Word(int _flag=1,int _state=-1,vector<string> &_left={}){
-// 		flag = _flag;
-// 		state=_state;
-// 		left=_left;
-// 	}
-// };
-
 
 unordered_map<string,int> TERMINALS,NONTERMINALS;
 vector<vector<pair<int,string>>> actionTable; //shift : the state reduce: pop,add
@@ -451,8 +439,6 @@ void split(string &prog){
 	}
 }
 
-
-
 void init(string &prog){
     NONTERMINALS={{"program",0},{"stmt",1},{"compoundstmt",2},{"stmts",3},{"ifstmt",4},{"whilestmt",5},{"assgstmt",6},{"boolexpr",7},{"boolop",8},{"arithexpr",9},{"arithexprprime",10},{"multexpr",11},{"multexprprime",12},{"simpleexpr",13}};
 	TERMINALS={{"{",0},{"}",1},{"while",2},{"if",3},{"ID",4},{"NUM",5},{";",6},{"*",7},{"/",8},{"+",9},{"-",10},{"(",11},{")",12},{">",13},{"<",14},{"==",15},{"<=",16},{">=",17},{"=",18},{"then",19},{"else",20},{"$",21}};
@@ -483,7 +469,7 @@ void reduce(int pop_num,const string &left){
 	
 void old2new(){
 	int n=newString.size()-1;
-	ans.push_back("program =>");
+	ans.push_back("program => ");
 	for(int i=n;i>=1;--i){
 		string s=ans[n-i];
 		int pos=s.rfind(oldString[i-1]);
