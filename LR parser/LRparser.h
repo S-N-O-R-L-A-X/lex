@@ -83,7 +83,7 @@ void create_action_table(){
 	actionTable[17][5]={23,""};
 	actionTable[17][11]={24,""};
 
-	actionTable[18][1]={27,""};
+	actionTable[18][12]={27,""};
 
 	actionTable[19][13]={30,""};
 	actionTable[19][14]={29,""};
@@ -124,7 +124,7 @@ void create_action_table(){
 	actionTable[22][8]={1,"simpleexpr"};
 	actionTable[22][9]={1,"simpleexpr"};
 	actionTable[22][10]={1,"simpleexpr"};
-	actionTable[22][12]={3,"simpleexpr"};
+	actionTable[22][12]={1,"simpleexpr"};
 	actionTable[22][13]={1,"simpleexpr"};
 	actionTable[22][14]={1,"simpleexpr"};
 	actionTable[22][15]={1,"simpleexpr"};
@@ -250,11 +250,36 @@ void create_action_table(){
 	actionTable[45][17]={0,"arithexprprime"};
 	actionTable[45][20]={0,"arithexprprime"};
 	
-
+	actionTable[46][1]={0,"multexprprime"};
+	actionTable[46][6]={0,"multexprprime"};
 	actionTable[46][7]={38,""};
 	actionTable[46][8]={39,""};
+	actionTable[46][9]={0,"multexprprime"};
+	actionTable[46][10]={0,"multexprprime"};
+	actionTable[46][12]={0,"multexprprime"};
+	actionTable[46][13]={0,"multexprprime"};
+	actionTable[46][14]={0,"multexprprime"};
+	actionTable[46][15]={0,"multexprprime"};
+	actionTable[46][16]={0,"multexprprime"};
+	actionTable[46][17]={0,"multexprprime"};
+	actionTable[46][20]={0,"multexprprime"};
+
+
+
+	actionTable[47][1]={0,"multexprprime"};
+	actionTable[47][6]={0,"multexprprime"};
 	actionTable[47][7]={38,""};
 	actionTable[47][8]={39,""};
+	actionTable[47][9]={0,"multexprprime"};
+	actionTable[47][10]={0,"multexprprime"};
+	actionTable[47][12]={0,"multexprprime"};
+	actionTable[47][13]={0,"multexprprime"};
+	actionTable[47][14]={0,"multexprprime"};
+	actionTable[47][15]={0,"multexprprime"};
+	actionTable[47][16]={0,"multexprprime"};
+	actionTable[47][17]={0,"multexprprime"};
+	actionTable[47][20]={0,"multexprprime"};
+
 
 	actionTable[48][1]={5,"whilestmt"};
 	actionTable[48][20]={5,"whilestmt"};
@@ -295,29 +320,29 @@ void create_action_table(){
 	actionTable[52][17]={3,"arithexprprime"};
 	actionTable[52][20]={3,"arithexprprime"};
 
-	actionTable[53][1]={0,"multexprprime"};
-	actionTable[53][6]={0,"multexprprime"};
-	actionTable[53][9]={0,"multexprprime"};
-	actionTable[53][10]={0,"multexprprime"};
-	actionTable[53][12]={0,"multexprprime"};
-	actionTable[53][13]={0,"multexprprime"};
-	actionTable[53][14]={0,"multexprprime"};
-	actionTable[53][15]={0,"multexprprime"};
-	actionTable[53][16]={0,"multexprprime"};
-	actionTable[53][17]={0,"multexprprime"};
-	actionTable[53][20]={0,"multexprprime"};
+	actionTable[53][1]={3,"multexprprime"};
+	actionTable[53][6]={3,"multexprprime"};
+	actionTable[53][9]={3,"multexprprime"};
+	actionTable[53][10]={3,"multexprprime"};
+	actionTable[53][12]={3,"multexprprime"};
+	actionTable[53][13]={3,"multexprprime"};
+	actionTable[53][14]={3,"multexprprime"};
+	actionTable[53][15]={3,"multexprprime"};
+	actionTable[53][16]={3,"multexprprime"};
+	actionTable[53][17]={3,"multexprprime"};
+	actionTable[53][20]={3,"multexprprime"};
 
-	actionTable[54][1]={0,"multexprprime"};
-	actionTable[54][6]={0,"multexprprime"};
-	actionTable[54][9]={0,"multexprprime"};
-	actionTable[54][10]={0,"multexprprime"};
-	actionTable[54][12]={0,"multexprprime"};
-	actionTable[54][13]={0,"multexprprime"};
-	actionTable[54][14]={0,"multexprprime"};
-	actionTable[54][15]={0,"multexprprime"};
-	actionTable[54][16]={0,"multexprprime"};
-	actionTable[54][17]={0,"multexprprime"};
-	actionTable[54][20]={0,"multexprprime"};
+	actionTable[54][1]={3,"multexprprime"};
+	actionTable[54][6]={3,"multexprprime"};
+	actionTable[54][9]={3,"multexprprime"};
+	actionTable[54][10]={3,"multexprprime"};
+	actionTable[54][12]={3,"multexprprime"};
+	actionTable[54][13]={3,"multexprprime"};
+	actionTable[54][14]={3,"multexprprime"};
+	actionTable[54][15]={3,"multexprprime"};
+	actionTable[54][16]={3,"multexprprime"};
+	actionTable[54][17]={3,"multexprprime"};
+	actionTable[54][20]={3,"multexprprime"};
 
 
 	actionTable[55][0]={3,""};
@@ -329,6 +354,7 @@ void create_action_table(){
 	actionTable[56][20]={8,"ifstmt"};
 
 	actionTable[57][1]={4,"assgstmt"};
+	actionTable[57][20]={4,"assgstmt"};
 }
 
 
@@ -377,6 +403,9 @@ void create_goto_table(){
 	gotoTable[35][11]=44;
 	gotoTable[35][13]=21;
 	gotoTable[36][11]=45;
+
+	gotoTable[38][13]=46;
+	gotoTable[39][13]=47;
 
 	gotoTable[40][1]=48;
 	gotoTable[40][2]=9;
