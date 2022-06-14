@@ -1,0 +1,82 @@
+任务描述
+本关任务：根据给定文法，用C/C++语言编写Translation Schema，执行程序并给出结果
+
+相关知识
+为了完成本关任务，你需要掌握：
+
+Translation Schema相关方法理论
+C/C++ 编程语言基础
+C语言的基本结构知识
+Translation Schema
+在动手设计之前，你应该先做好Translation Schema的相关准备工作。
+
+你应该在你的程序中进行类型检查，以便对算术表达式(无论是整数算术还是实数算术)执行正确的操作。
+
+C/C++
+本实训涉及函数、结构体，标准流输入输出，字符串等操作
+
+实验要求
+实验文法定义
+
+program -> decls compoundstmt
+decls -> decl ; decls | E
+decl -> int ID = INTNUM | real ID = REALNUM
+stmt -> ifstmt | assgstmt | compoundstmt
+compoundstmt -> { stmts }
+stmts -> stmt stmts | E
+ifstmt -> if ( boolexpr ) then stmt else stmt
+assgstmt -> ID = arithexpr ;
+boolexpr -> arithexpr boolop arithexpr
+boolop -> < | > | <= | >= | ==
+arithexpr -> multexpr arithexprprime
+arithexprprime -> + multexpr arithexprprime | - multexpr arithexprprime | E
+multexpr -> simpleexpr multexprprime
+multexprprime -> * simpleexpr multexprprime | / simpleexpr multexprprime | E
+simpleexpr -> ID | INTNUM | REALNUM | ( arithexpr )
+起始符
+program
+
+保留字
+{ }
+if ( ) then else
+ID = 
+> < >= <= ==
++ -
+* /
+ID INTNUM REALNUM
+int ID = 
+real ID = 
+; 
+E 是'空'
+ID为标识符，均以小写字母表示，例如：a，b，c.....
+
+INTNUM是正整数
+
+REALNUM是一个正实数（即INTNUM . INTNUM）
+
+分隔方式
+同一行的输入字符之间用一个空格字符分隔，例如：int a = 1 ; int b = 2 ;
+
+错误处理
+本实验需要考虑错误处理，如果程序不正确，它应该输出语义错误信息（与行号一起）并退出，不需要进行错误改正。
+例如：
+
+error message:line 1,realnum can not be translated into int type
+输入
+要求：在同一行中每个输入字符之间用一个空格字符分隔，无其余无关符号，输入输出全部为英文状态下字符。
+
+样例输入：
+int a = 1 ; int b = 2 ; real c = 3.0 ;  
+{  
+a = a + 1 ;  
+b = b * a ;  
+if ( a < b ) then c = c / 2 ; else c = c / 4 ;  
+}  
+输出
+a: 2
+
+b: 4
+
+c: 1.5
+
+输出变量名及其数值，中间相隔一个空格
