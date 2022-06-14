@@ -1,0 +1,37 @@
+example 1:
+int a = 1 ; int b = 2 ; real c = 3.0 ;
+
+{
+
+a = a + 1 ;
+
+b = b * a ;
+
+if ( a < b ) then c = c / 2 ; else c = c / 4 ;
+
+}
+
+expect:
+a: 2
+b: 4
+c: 1.5
+
+
+
+example 2:
+int a = 3 ; int b = 5.73 ; real c = 3.0 ;
+
+{
+
+a = a + 1 ;
+
+b = b + a ;
+
+if ( a < b ) then c = c / 0 ; else c = c / 4 ;
+
+}
+
+expect:
+error message:line 1,realnum can not be translated into int type
+error message:line 5,division by zero
+
