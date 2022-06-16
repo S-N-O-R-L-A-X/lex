@@ -7,6 +7,7 @@
         "vector": "cpp",
         "stack": "cpp",
         "utility": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "iosfwd": "cpp"
     }
 }
