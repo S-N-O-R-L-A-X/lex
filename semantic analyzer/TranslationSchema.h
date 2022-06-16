@@ -60,12 +60,12 @@ void readParameters(){
     stringstream ss(words[0]);
     string now;
     int cnt=0;
-
-    while(ss){
-        vector<string> v(5);
-        for(int j=0;j<5;++j){ //read 5 words 
-            ss>>v[j];
-        }
+    vector<string> line;
+    while(ss>>now){
+        line.push_back(now);
+    }
+    for(int i=0;i<line.size();i+=5){
+        vector<string> v(line.begin()+i,line.begin()+i+5);
         word tmp;
         identifier2idx[v[1]]=cnt++;
         if(v[0]=="int"){
@@ -91,7 +91,18 @@ void readParameters(){
 }
 
 void semanticAnalyze(){
-    
+    for(int i=2;i<words.size();++i){
+        stringstream ss(words[i]);
+        string now;
+        vector<string> line;
+        while(ss>>now){
+            line.push_back(now);
+        }
+
+        for(int i=0;i<line.size();++i){
+
+        }
+    }
 }
 
 void read_prog(string& prog)
