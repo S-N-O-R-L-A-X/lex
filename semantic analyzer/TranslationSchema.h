@@ -14,17 +14,17 @@
 #define endl "\n"<<flush
 using namespace std;
 
+struct word {
+    string name;
+    int type;
+    double value;
+};
+
 unordered_map<string,int> TERMINALS,NONTERMINALS,identifier2idx;
 vector<vector<pair<int,string>>> actionTable; //shift : the state reduce: pop,add
 vector<vector<int>> gotoTable;
 stack<pair<string,int>> stk;
 vector<string> words,ans,oldString,newString;
-
-struct word {
-    int type;
-    double value;
-};
-
 vector<word> identifiers;
 
 void split(string &prog){
@@ -53,7 +53,7 @@ void init(string &prog){
 }
 
 void error(){
-
+    cout<<"error";
 }
 
 void readParameters(){
@@ -67,6 +67,7 @@ void readParameters(){
     for(int i=0;i<line.size();i+=5){
         vector<string> v(line.begin()+i,line.begin()+i+5);
         word tmp;
+        tmp.name=v[1];
         identifier2idx[v[1]]=cnt++;
         if(v[0]=="int"){
             tmp.type=0;
@@ -86,22 +87,144 @@ void readParameters(){
             error();
             return ;
         }
+        identifiers.emplace_back(tmp);
     }
-	
+}
+
+int findStr(vector<string> & vec,const string &str,int start=0){
+    for(int i=start;i<vec.size();++i){
+        if(vec[i]==str){
+            return i;
+        }
+    }
+    return -1;
+}
+
+int toThen(vector<string> & vec,int start=0){
+    return findStr(vec,"then",start);
+}
+
+int toElse(vector<string> & vec,int start=0){
+    return findStr(vec,"else",start);
+}
+
+void doOperation(vector<string> &operations){
+    int idx1=identifier2idx[operations[0]],idx2=identifier2idx[operations[2]];
+    if(identifier2idx.find(operations[4])!=identifier2idx.end()){// x=y+z
+        int idx3=identifier2idx[operations[4]];
+        if(operations[3]=="+"){
+            identifiers[idx1].value=identifiers[idx2].value+identifiers[idx3].value;
+        }
+        else if(operations[3]=="-"){
+            identifiers[idx1].value=identifiers[idx2].value-identifiers[idx3].value;
+        }
+        else if(operations[3]=="*"){
+            identifiers[idx1].value=identifiers[idx2].value*identifiers[idx3].value;
+        }
+        else if(operations[3]=="/"){
+            identifiers[idx1].value=(double)identifiers[idx2].value/identifiers[idx3].value;
+        }
+    }
+    else { //x=y+0
+        if(operations[3]=="+"){
+            identifiers[idx1].value=identifiers[idx2].value+stod(operations[4]);
+        }
+        else if(operations[3]=="-"){
+            identifiers[idx1].value=identifiers[idx2].value-stod(operations[4]);
+        }
+        else if(operations[3]=="*"){
+            identifiers[idx1].value=identifiers[idx2].value*stod(operations[4]);
+        }
+        else if(operations[3]=="/"){
+            if(operations[4]=="0"){
+                error();
+                return ;
+            }
+            identifiers[idx1].value=(double)identifiers[idx2].value/stod(operations[4]);
+        }
+    }
 }
 
 void semanticAnalyze(){
-    for(int i=2;i<words.size();++i){
+    for(int i=2;i<words.size()-1;++i){
         stringstream ss(words[i]);
         string now;
         vector<string> line;
         while(ss>>now){
             line.push_back(now);
         }
-
-        for(int i=0;i<line.size();++i){
-
+        if(line[0]=="if"){
+            if(line[3]==">="){
+                if(line[2]>=line[4]){ //execute then
+                    int Then=toThen(line,4);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    doOperation(operations);
+                }
+                else{//execute when
+                    int Else=toElse(line,4);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    doOperation(operations);
+                }
+            }
+            else if(line[3]=="<="){
+                if(line[2]<=line[4]){ //execute then
+                    int Then=toThen(line,4);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    doOperation(operations);
+                }
+                else{//execute when
+                    int Else=toElse(line,4);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    doOperation(operations);
+                }
+            }
+            else if(line[3]=="=="){
+                if(line[2]==line[4]){ //execute then
+                    int Then=toThen(line,4);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    doOperation(operations);
+                }
+                else{//execute when
+                    int Else=toElse(line,4);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    doOperation(operations);
+                }
+            }
+            else if(line[3]==">"){
+                if(line[2]>line[4]){ //execute then
+                    int Then=toThen(line,4);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    doOperation(operations);
+                }
+                else{//execute when
+                    int Else=toElse(line,4);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    doOperation(operations);
+                }
+            }
+            else if(line[3]=="<"){
+                if(line[2]<line[4]){ //execute then
+                    int Then=toThen(line,4);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    doOperation(operations);
+                }
+                else{//execute when
+                    int Else=toElse(line,4);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    doOperation(operations);
+                }
+            }
         }
+        else if(identifier2idx.find(line[0])!=identifier2idx.end()){ //identifier
+            doOperation(line);
+        }
+
+    }
+}
+
+void output(){
+    for(int i=0;i<identifiers.size();++i){
+        cout<<identifiers[i].name<<": "<<identifiers[i].value<<endl;
     }
 }
 
@@ -120,8 +243,10 @@ void Analysis()
     read_prog(prog);
     /* 骚年们 请开始你们的表演 */
     /********* Begin *********/
-    
-    
+    init(prog);
+    readParameters();
+    semanticAnalyze();
+    output();
     /********* End *********/
     
 }
