@@ -20,11 +20,8 @@ struct word {
     double value;
 };
 
-unordered_map<string,int> TERMINALS,NONTERMINALS,identifier2idx;
-vector<vector<pair<int,string>>> actionTable; //shift : the state reduce: pop,add
-vector<vector<int>> gotoTable;
-stack<pair<string,int>> stk;
-vector<string> words,ans,oldString,newString;
+unordered_map<string,int> identifier2idx;
+vector<string> words;
 vector<word> identifiers;
 
 void split(string &prog){
@@ -43,13 +40,7 @@ void split(string &prog){
 }
 
 void init(string &prog){
-    NONTERMINALS={{"program",0},{"stmt",1},{"compoundstmt",2},{"stmts",3},{"ifstmt",4},{"whilestmt",5},{"assgstmt",6},{"boolexpr",7},{"boolop",8},{"arithexpr",9},{"arithexprprime",10},{"multexpr",11},{"multexprprime",12},{"simpleexpr",13}};
-	TERMINALS={{"{",0},{"}",1},{"while",2},{"if",3},{"ID",4},{"NUM",5},{";",6},{"*",7},{"/",8},{"+",9},{"-",10},{"(",11},{")",12},{">",13},{"<",14},{"==",15},{"<=",16},{">=",17},{"=",18},{"then",19},{"else",20},{"$",21}};
 	split(prog);
-	actionTable.resize(100,vector<pair<int,string>>(22));
-    gotoTable.resize(100,vector<int>(14));
-	// create_table();
-	stk.push({"start",0});
 }
 
 void error(){
@@ -110,39 +101,82 @@ int toElse(vector<string> & vec,int start=0){
 
 void doOperation(vector<string> &operations){
     int idx1=identifier2idx[operations[0]],idx2=identifier2idx[operations[2]];
+    double tmp=0;
+
     if(identifier2idx.find(operations[4])!=identifier2idx.end()){// x=y+z
         int idx3=identifier2idx[operations[4]];
         if(operations[3]=="+"){
-            identifiers[idx1].value=identifiers[idx2].value+identifiers[idx3].value;
+            tmp=identifiers[idx2].value+identifiers[idx3].value;
         }
         else if(operations[3]=="-"){
-            identifiers[idx1].value=identifiers[idx2].value-identifiers[idx3].value;
+            tmp=identifiers[idx2].value-identifiers[idx3].value;
         }
         else if(operations[3]=="*"){
-            identifiers[idx1].value=identifiers[idx2].value*identifiers[idx3].value;
+            tmp=identifiers[idx2].value*identifiers[idx3].value;
         }
         else if(operations[3]=="/"){
-            identifiers[idx1].value=(double)identifiers[idx2].value/identifiers[idx3].value;
+            tmp=(double)identifiers[idx2].value/identifiers[idx3].value;
         }
     }
     else { //x=y+0
         if(operations[3]=="+"){
-            identifiers[idx1].value=identifiers[idx2].value+stod(operations[4]);
+            tmp=identifiers[idx2].value+stod(operations[4]);
         }
         else if(operations[3]=="-"){
-            identifiers[idx1].value=identifiers[idx2].value-stod(operations[4]);
+            tmp=identifiers[idx2].value-stod(operations[4]);
         }
         else if(operations[3]=="*"){
-            identifiers[idx1].value=identifiers[idx2].value*stod(operations[4]);
+            tmp=identifiers[idx2].value*stod(operations[4]);
         }
         else if(operations[3]=="/"){
             if(operations[4]=="0"){
                 error();
                 return ;
             }
-            identifiers[idx1].value=(double)identifiers[idx2].value/stod(operations[4]);
+            tmp=(double)identifiers[idx2].value/stod(operations[4]);
         }
     }
+    
+    for(int i=5;i<operations.size();i+=2){
+        if(operations[i]==";"){
+            break;
+        }
+        if(identifier2idx.find(operations[i+1])!=identifier2idx.end()){// x=y+z
+            int idx3=identifier2idx[operations[i+1]];
+            if(operations[i]=="+"){
+                tmp=tmp+identifiers[idx3].value;
+            }
+            else if(operations[i]=="-"){
+                tmp=tmp-identifiers[idx3].value;
+            }
+            else if(operations[i]=="*"){
+                tmp=tmp*identifiers[idx3].value;
+            }
+            else if(operations[i]=="/"){
+                tmp=(double)tmp/identifiers[idx3].value;
+            }
+        }
+        else { //x=y+0
+            if(operations[i]=="+"){
+                tmp=tmp+stod(operations[i+1]);
+            }
+            else if(operations[i]=="-"){
+                tmp=tmp-stod(operations[i+1]);
+            }
+            else if(operations[i]=="*"){
+                tmp=tmp*stod(operations[i+1]);
+            }
+            else if(operations[i]=="/"){
+                if(operations[i+1]=="0"){
+                    error();
+                    return ;
+                }
+                tmp=(double)tmp/stod(operations[i+1]);
+            }
+        }
+    }
+
+    identifiers[idx1].value=tmp;
 }
 
 void semanticAnalyze(){
@@ -157,60 +191,60 @@ void semanticAnalyze(){
             if(line[3]==">="){
                 if(line[2]>=line[4]){ //execute then
                     int Then=toThen(line,4);
-                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
                     doOperation(operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
-                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
                     doOperation(operations);
                 }
             }
             else if(line[3]=="<="){
                 if(line[2]<=line[4]){ //execute then
                     int Then=toThen(line,4);
-                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
                     doOperation(operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
-                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
                     doOperation(operations);
                 }
             }
             else if(line[3]=="=="){
                 if(line[2]==line[4]){ //execute then
                     int Then=toThen(line,4);
-                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
                     doOperation(operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
-                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
                     doOperation(operations);
                 }
             }
             else if(line[3]==">"){
                 if(line[2]>line[4]){ //execute then
                     int Then=toThen(line,4);
-                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
                     doOperation(operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
-                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
                     doOperation(operations);
                 }
             }
             else if(line[3]=="<"){
                 if(line[2]<line[4]){ //execute then
                     int Then=toThen(line,4);
-                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+6);
+                    vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
                     doOperation(operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
-                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+6);
+                    vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
                     doOperation(operations);
                 }
             }
