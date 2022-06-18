@@ -23,6 +23,7 @@ struct word {
 unordered_map<string,int> identifier2idx;
 vector<string> words;
 vector<word> identifiers;
+bool wrong=false;
 
 void split(string &prog){
 	string tmp=prog;
@@ -43,8 +44,9 @@ void init(string &prog){
 	split(prog);
 }
 
-void error(){
-    cout<<"error";
+void error(int line,const string &str){
+    wrong=true;
+    cout<<"error message:line "<<line<<","<<str<<endl;
 }
 
 void readParameters(){
@@ -63,7 +65,7 @@ void readParameters(){
         if(v[0]=="int"){
             tmp.type=0;
             if(v[3].find('.')!=v[3].npos){//int
-                error();
+                error(1,"realnum can not be translated into int type");
                 return ;
             }
             else{
@@ -75,7 +77,7 @@ void readParameters(){
             tmp.value=stod(v[3]);
         }
         else{
-            error();
+            error(1,"unaccepted tokens");
             return ;
         }
         identifiers.emplace_back(tmp);
@@ -99,7 +101,7 @@ int toElse(vector<string> & vec,int start=0){
     return findStr(vec,"else",start);
 }
 
-void doOperation(vector<string> &operations){
+void doOperation(int line,vector<string> &operations){
     int idx1=identifier2idx[operations[0]],idx2=identifier2idx[operations[2]];
     double tmp=0;
 
@@ -130,7 +132,7 @@ void doOperation(vector<string> &operations){
         }
         else if(operations[3]=="/"){
             if(operations[4]=="0"){
-                error();
+                error(line,"division by zero");
                 return ;
             }
             tmp=(double)identifiers[idx2].value/stod(operations[4]);
@@ -168,7 +170,7 @@ void doOperation(vector<string> &operations){
             }
             else if(operations[i]=="/"){
                 if(operations[i+1]=="0"){
-                    error();
+                    error(line,"division by zero");
                     return ;
                 }
                 tmp=(double)tmp/stod(operations[i+1]);
@@ -183,7 +185,7 @@ void semanticAnalyze(){
     for(int i=2;i<words.size()-1;++i){
         stringstream ss(words[i]);
         string now;
-        vector<string> line;
+        vector<string> line(0);
         while(ss>>now){
             line.push_back(now);
         }
@@ -192,73 +194,75 @@ void semanticAnalyze(){
                 if(line[2]>=line[4]){ //execute then
                     int Then=toThen(line,4);
                     vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
                     vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
             }
             else if(line[3]=="<="){
                 if(line[2]<=line[4]){ //execute then
                     int Then=toThen(line,4);
                     vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
                     vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
             }
             else if(line[3]=="=="){
                 if(line[2]==line[4]){ //execute then
                     int Then=toThen(line,4);
                     vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
                     vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
             }
             else if(line[3]==">"){
                 if(line[2]>line[4]){ //execute then
                     int Then=toThen(line,4);
                     vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
                     vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
             }
             else if(line[3]=="<"){
                 if(line[2]<line[4]){ //execute then
                     int Then=toThen(line,4);
                     vector<string> operations(line.begin()+Then+1,line.begin()+Then+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
                 else{//execute when
                     int Else=toElse(line,4);
                     vector<string> operations(line.begin()+Else+1,line.begin()+Else+7);
-                    doOperation(operations);
+                    doOperation(i+1,operations);
                 }
             }
         }
         else if(identifier2idx.find(line[0])!=identifier2idx.end()){ //identifier
-            doOperation(line);
+            doOperation(i+1,line);
         }
 
     }
 }
 
 void output(){
-    for(int i=0;i<identifiers.size();++i){
-        cout<<identifiers[i].name<<": "<<identifiers[i].value<<endl;
+    if(!wrong){
+        for(int i=0;i<identifiers.size();++i){
+            cout<<identifiers[i].name<<": "<<identifiers[i].value<<endl;
+        }
     }
 }
 
