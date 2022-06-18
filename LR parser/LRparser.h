@@ -1,4 +1,4 @@
-// C�?言词法分析�?
+// C�?言词法分析�?
 #include <cstdio>
 #include <cstring>
 #include <iostream>
@@ -488,7 +488,7 @@ void old2new(){
 }
 
 void error(string &lost,int line){
-	cout<<"�﷨���󣬵�"+to_string(line)+"�У�ȱ��\""+lost+"\""<<endl;
+	cout<<"�﷨���󣬵�"+to_string(line)+"�У�ȱ��\""+lost+"\""<<endl;
 }
 
 void LRparse(string &prog){
@@ -500,10 +500,6 @@ void LRparse(string &prog){
 			while(stk.top().first!="acc"){
 				string str=stk.top().first;
 				int state=stk.top().second;
-				// if(str=="E"){
-				// 	println(str);
-				// 	continue ;
-				// }
 				if(TERMINALS.find(now)!=TERMINALS.end()){//now can be identified
 					int idx=TERMINALS[now];
 					int num=actionTable[state][idx].first;
@@ -537,7 +533,7 @@ void LRparse(string &prog){
 }
 
 
-/* 不�?�修改这�?标准输入函数 */
+/* 不�?�修改这�?标准输入函数 */
 void read_prog(string& prog)
 {
     char c;
@@ -545,13 +541,13 @@ void read_prog(string& prog)
         prog += c;
     }
 }
-/* 你可以添加其他函�? */
+/* 你可以添加其他函�? */
 
 void Analysis()
 {
     string prog;
     read_prog(prog);
-    /* 骚年�? 请开始你�?的表�? */
+    /* 骚年�? 请开始你�?的表�? */
     /********* Begin *********/
     init(prog);
 	words.push_back("$");

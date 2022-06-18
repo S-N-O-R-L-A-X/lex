@@ -137,3 +137,26 @@ compoundstmt =>
 { if ( simpleexpr multexprprime == ID ) then ID = NUM ; else ID = ID * NUM ; } => 
 { if ( simpleexpr == ID ) then ID = NUM ; else ID = ID * NUM ; } => 
 { if ( ID == ID ) then ID = NUM ; else ID = ID * NUM ; } 
+
+
+myself:
+{
+while ( ID == NUM ) 
+{ 
+ID = ID * NUM ;
+}
+}
+
+{ 
+while ( ID > NUM )
+{
+if ( ID > NUM * NUM )
+then
+ID = ID + NUM ;
+else
+ID = ID * NUM ;
+} 
+}
+
+
+

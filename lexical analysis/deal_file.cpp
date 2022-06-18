@@ -10,6 +10,5 @@ int main(){
         s="{\""+s+"},";
         fout<<s;
         cout<<s<<endl;
-    }
-    
+    }   
 }
